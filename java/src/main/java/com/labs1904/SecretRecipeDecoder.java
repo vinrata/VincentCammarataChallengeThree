@@ -43,8 +43,12 @@ public class SecretRecipeDecoder {
             put("9", "7");
             put("1", "8");
             put("6", "9");
+
         }
+
     };
+
+
 
     /**
      * Given a string named str, use the Caesar encoding above to return the decoded string.
@@ -52,10 +56,46 @@ public class SecretRecipeDecoder {
      * @return
      */
     public static String decodeString(String str) {
-        // TODO: implement me
-        return "1 cup";
-    }
+        // System.out.println("The encrypted word is: " + str);
+        char[] chars = str.toCharArray();
+        System.out.println(chars);
 
+        String newOne = "";
+        newOne.toString();
+
+        //    String newBoi = Character.toString(chars[0]);
+        for (Map.Entry<String , String> set : ENCODING.entrySet()){
+           // System.out.println(set.getKey() + " = " + set.getValue());
+           // System.out.println(ENCODING.get("z"));
+           // System.out.println(ENCODING.get(newBoi));
+
+
+        }
+        String complete = "";
+
+        for (int i =0;i<chars.length;i++){
+            String preHold;
+            String holder;
+            preHold = Character.toString(chars[i]);
+            holder = ENCODING.get(preHold);
+
+          //  System.out.println("holder: " + holder);
+
+            complete = complete.concat(holder);
+
+            //System.out.println(complete);
+
+
+        }
+        str = complete;
+        System.out.println(str);
+
+        return str;
+
+
+        // TODO: implement me
+
+    }
     /**
      * Given an ingredient, decode the amount and description, and return a new Ingredient
      * @param line
@@ -63,10 +103,16 @@ public class SecretRecipeDecoder {
      */
     public static Ingredient decodeIngredient(String line) {
         // TODO: implement me
+
+
+
         return new Ingredient("1 cup", "butter");
     }
 
     public static void main(String[] args) {
+
+        decodeString("hgiikf");
+
         // TODO: implement me
     }
 }
