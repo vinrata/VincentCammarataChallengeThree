@@ -3,6 +3,8 @@ package com.labs1904;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
+
 public class TestSecretRecipeDecoder {
     @Test
     public void testDecodeString() {
@@ -10,7 +12,7 @@ public class TestSecretRecipeDecoder {
     }
 
     @Test
-    public void testDecodeIngredient() {
+    public void testDecodeIngredient() throws IOException {
         Ingredient expected = new Ingredient("1 cup", "butter");
         Ingredient actual = SecretRecipeDecoder.decodeIngredient("8 vgl#hgiikf");
         Assert.assertEquals(expected.getAmount(), actual.getAmount());

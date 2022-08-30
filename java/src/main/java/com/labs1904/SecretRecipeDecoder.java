@@ -1,6 +1,9 @@
 package com.labs1904;
 
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,7 +69,7 @@ public class SecretRecipeDecoder {
         //    String newBoi = Character.toString(chars[0]);
         for (Map.Entry<String , String> set : ENCODING.entrySet()){
            // System.out.println(set.getKey() + " = " + set.getValue());
-           // System.out.println(ENCODING.get("z"));
+           // System.out.println(ENCODING);
            // System.out.println(ENCODING.get(newBoi));
 
 
@@ -101,18 +104,54 @@ public class SecretRecipeDecoder {
      * @param line
      * @return
      */
-    public static Ingredient decodeIngredient(String line) {
-        // TODO: implement me
 
+    public static Ingredient decodeIngredient(String line) throws IOException {
+        // TODO: implement me
+         String filePath = "/Users/vinny/Desktop/challenge/VincentCammarataChallengeThree/java/src/main/resources/secret_recipe.txt";
+        //String filePath = line;
+
+
+        Map<String, String> bigMap = new HashMap<String, String>() {
+
+        };
+        HashMap<String, String> map = new HashMap<String, String>();
+        int count = 0;
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        while ((line = reader.readLine()) != null)
+        {
+            String[] parts = line.split("#", 2);
+            if (parts.length >= 2)
+            {
+                String key = parts[0];
+                String value = parts[1];
+
+             System.out.println(bigMap);
+            map.put(key, value);
+             bigMap.put(key, value);
+                count = count + 1;
+            }
+          //   System.out.println("Line: " + count + " | "+ parts[0] + ", " + parts[1]);
+            //System.out.println("looping");
+             //System.out.println(parts[1]);
+            //System.out.println(map);
+
+        }
+        System.out.println(map);
+        for (String key : map.keySet())
+        {
+           // System.out.println(key + "," + map.get(key));
+        }  //System.out.println(map);
+        reader.close();
+       // System.out.println(bigMap);
 
 
         return new Ingredient("1 cup", "butter");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         decodeString("hgiikf");
-
+        decodeIngredient("8 vgl#hgiikf");
         // TODO: implement me
     }
 }
