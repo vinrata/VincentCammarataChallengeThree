@@ -46,7 +46,7 @@ public class SecretRecipeDecoder {
             put("9", "7");
             put("1", "8");
             put("6", "9");
-
+            put(" ", " ");
         }
 
     };
@@ -71,8 +71,6 @@ public class SecretRecipeDecoder {
            // System.out.println(set.getKey() + " = " + set.getValue());
            // System.out.println(ENCODING);
            // System.out.println(ENCODING.get(newBoi));
-
-
         }
         String complete = "";
 
@@ -84,7 +82,7 @@ public class SecretRecipeDecoder {
 
           //  System.out.println("holder: " + holder);
 
-            complete = complete.concat(holder);
+            complete = complete +(holder);
 
             //System.out.println(complete);
 
@@ -107,45 +105,38 @@ public class SecretRecipeDecoder {
 
     public static Ingredient decodeIngredient(String line) throws IOException {
         // TODO: implement me
-         String filePath = "/Users/vinny/Desktop/challenge/VincentCammarataChallengeThree/java/src/main/resources/secret_recipe.txt";
-        //String filePath = line;
-
+        // String filePath = "/Users/vinny/Desktop/challenge/VincentCammarataChallengeThree/java/src/main/resources/secret_recipe.txt";
+        String filePath = line;
+        String amt = "";
+        String desc = "";
 
         Map<String, String> bigMap = new HashMap<String, String>() {
 
         };
         HashMap<String, String> map = new HashMap<String, String>();
         int count = 0;
-        BufferedReader reader = new BufferedReader(new FileReader(filePath));
-        while ((line = reader.readLine()) != null)
-        {
+       // BufferedReader reader = new BufferedReader(new FileReader(filePath));
+       // while ((line = reader.readLine()) != null)
+       // {
             String[] parts = line.split("#", 2);
             if (parts.length >= 2)
             {
                 String key = parts[0];
                 String value = parts[1];
-
-             System.out.println(bigMap);
-            map.put(key, value);
+                map.put(key, value);
              bigMap.put(key, value);
                 count = count + 1;
-            }
-          //   System.out.println("Line: " + count + " | "+ parts[0] + ", " + parts[1]);
-            //System.out.println("looping");
-             //System.out.println(parts[1]);
-            //System.out.println(map);
-
+          //  }
+                 amt = decodeString(key);
+                 desc = decodeString(value);
+                 System.out.println(key + " " + value);
         }
-        System.out.println(map);
-        for (String key : map.keySet())
-        {
-           // System.out.println(key + "," + map.get(key));
-        }  //System.out.println(map);
-        reader.close();
-       // System.out.println(bigMap);
+        System.out.println(amt + " "+ desc);
+           // String preAmt = map[0].toString();
 
+        Ingredient myIngredient = new Ingredient( amt, desc );
 
-        return new Ingredient("1 cup", "butter");
+        return  myIngredient;
     }
 
     public static void main(String[] args) throws IOException {
