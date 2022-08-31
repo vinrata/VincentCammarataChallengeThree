@@ -1,11 +1,15 @@
 package com.labs1904;
 
 
+import java.util.HashMap;
+import java.util.Map;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class SecretRecipeDecoder {
     private static Map<String, String> ENCODING = new HashMap<String, String>() {
@@ -47,6 +51,8 @@ public class SecretRecipeDecoder {
             put("1", "8");
             put("6", "9");
             put(" ", " ");
+            put("-", "-");
+            put("/", "/");
         }
 
     };
@@ -61,7 +67,7 @@ public class SecretRecipeDecoder {
     public static String decodeString(String str) {
         // System.out.println("The encrypted word is: " + str);
         char[] chars = str.toCharArray();
-        System.out.println(chars);
+        //System.out.println(chars);
 
         String newOne = "";
         newOne.toString();
@@ -89,7 +95,7 @@ public class SecretRecipeDecoder {
 
         }
         str = complete;
-        System.out.println(str);
+       // System.out.println(str);
 
         return str;
 
@@ -113,7 +119,6 @@ public class SecretRecipeDecoder {
         Map<String, String> bigMap = new HashMap<String, String>() {
 
         };
-        HashMap<String, String> map = new HashMap<String, String>();
         int count = 0;
        // BufferedReader reader = new BufferedReader(new FileReader(filePath));
        // while ((line = reader.readLine()) != null)
@@ -123,15 +128,15 @@ public class SecretRecipeDecoder {
             {
                 String key = parts[0];
                 String value = parts[1];
-                map.put(key, value);
-             bigMap.put(key, value);
+             //   map.put(key, value);
+            // bigMap.put(key, value);
                 count = count + 1;
           //  }
                  amt = decodeString(key);
                  desc = decodeString(value);
-                 System.out.println(key + " " + value);
+                 //System.out.println(key + " " + value);
         }
-        System.out.println(amt + " "+ desc);
+        //System.out.println(amt + " "+ desc);
            // String preAmt = map[0].toString();
 
         Ingredient myIngredient = new Ingredient( amt, desc );
@@ -139,10 +144,42 @@ public class SecretRecipeDecoder {
         return  myIngredient;
     }
 
+    public static String decodeFile(String path) throws IOException {
+        //might need to create a hashmap
+        String line = " ";
+
+        String filePath = path;
+        //System.out.println(path);
+         BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        //Product[] obj = new Product[5] ;
+//create & initialize actual product objects using constructor
+       // obj[0] = new Product(23907,"Dell Laptop");
+
+
+        Map<String, String> fileMap = new HashMap<String, String>();
+        int counter = 0;
+         while ((line = reader.readLine()) != null)
+         {
+             counter++;
+             String current = "";
+            System.out.println(line);
+               current = decodeString(line);
+               System.out.println(current);
+               Ingredient iG = decodeIngredient(line);
+               //fileMap.put(iG);7
+            //System.out.println(decodeIngredient(decodeString(line)));
+         }
+
+        return filePath;
+    };
+
+
     public static void main(String[] args) throws IOException {
 
-        decodeString("hgiikf");
-        decodeIngredient("8 vgl#hgiikf");
+
+        //decodeString("hgiikf");
+        //decodeIngredient("8 vgl#hgiikf");
+        decodeFile("/Users/vinny/Desktop/challenge/VincentCammarataChallengeThree/java/src/main/resources/secret_recipe.txt");
         // TODO: implement me
     }
 }
