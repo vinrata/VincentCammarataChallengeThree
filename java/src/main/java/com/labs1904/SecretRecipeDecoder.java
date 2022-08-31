@@ -64,20 +64,60 @@ public class SecretRecipeDecoder {
      * @param str
      * @return
      */
-    public static String decodeString(String str) {
-        // System.out.println("The encrypted word is: " + str);
-        char[] chars = str.toCharArray();
-        //System.out.println(chars);
 
+    public static Ingredient decodeIngredient(String line)  {
+
+        String filePath = line;
+        String amt = "";
+        String desc = "";
+        int count = 0;
+
+        String[] parts = line.split("#", 2);
+        if (parts.length >= 2)
+        {
+            String key = parts[0];
+            String value = parts[1];
+
+            count = count + 1;
+            //key and value before decode
+            amt = decodeString(key);
+            desc = decodeString(value);
+        }
+
+        Ingredient myIngredient = new Ingredient( amt, desc );
+        return  myIngredient;
+    }
+
+    public static String decodeFile(String fileLine) throws IOException{
+        int count = 0;
+        String theLine = "";
+        String bigLine = "";
+        String holderLine = "";
+        BufferedReader reader = new BufferedReader(new FileReader(fileLine));
+        while ((fileLine = reader.readLine()) != null)
+        {
+            String[] parts = fileLine.split("#", 2);
+            if (parts.length >= 2)
+            {
+                String key = parts[0];
+                String value = parts[1];
+
+                count = count + 1;
+                theLine = key + " " + value;
+                theLine = decodeString(theLine);
+                holderLine = theLine + " \n";
+                bigLine =  bigLine.concat(holderLine);
+            }
+        }
+        reader.close();
+        return bigLine;
+    }
+
+
+    public static String decodeString(String str) {
+        char[] chars = str.toCharArray();
         String newOne = "";
         newOne.toString();
-
-        //    String newBoi = Character.toString(chars[0]);
-        for (Map.Entry<String , String> set : ENCODING.entrySet()){
-           // System.out.println(set.getKey() + " = " + set.getValue());
-           // System.out.println(ENCODING);
-           // System.out.println(ENCODING.get(newBoi));
-        }
         String complete = "";
 
         for (int i =0;i<chars.length;i++){
@@ -85,101 +125,28 @@ public class SecretRecipeDecoder {
             String holder;
             preHold = Character.toString(chars[i]);
             holder = ENCODING.get(preHold);
-
-          //  System.out.println("holder: " + holder);
-
             complete = complete +(holder);
-
-            //System.out.println(complete);
-
-
         }
         str = complete;
-       // System.out.println(str);
-
         return str;
-
-
-        // TODO: implement me
-
     }
-    /**
-     * Given an ingredient, decode the amount and description, and return a new Ingredient
-     * @param line
-     * @return
-     */
 
-    public static Ingredient decodeIngredient(String line) throws IOException {
-        // TODO: implement me
-        // String filePath = "/Users/vinny/Desktop/challenge/VincentCammarataChallengeThree/java/src/main/resources/secret_recipe.txt";
-        String filePath = line;
-        String amt = "";
-        String desc = "";
-
-        Map<String, String> bigMap = new HashMap<String, String>() {
-
-        };
-        int count = 0;
-       // BufferedReader reader = new BufferedReader(new FileReader(filePath));
-       // while ((line = reader.readLine()) != null)
-       // {
-            String[] parts = line.split("#", 2);
-            if (parts.length >= 2)
-            {
-                String key = parts[0];
-                String value = parts[1];
-             //   map.put(key, value);
-            // bigMap.put(key, value);
-                count = count + 1;
-          //  }
-                 amt = decodeString(key);
-                 desc = decodeString(value);
-                 //System.out.println(key + " " + value);
+    public static String fileMethod(String bigStr){
+        Path path = Paths.get("./decoded_recipe.txt");
+        try {
+            Files.writeString(path, bigStr, StandardCharsets.UTF_8);
         }
-        //System.out.println(amt + " "+ desc);
-           // String preAmt = map[0].toString();
-
-        Ingredient myIngredient = new Ingredient( amt, desc );
-
-        return  myIngredient;
+        catch (IOException ex) {
+            System.out.print("Invalid Path");
+        }
+        return bigStr;
     }
-
-    public static String decodeFile(String path) throws IOException {
-        //might need to create a hashmap
-        String line = " ";
-
-        String filePath = path;
-        //System.out.println(path);
-         BufferedReader reader = new BufferedReader(new FileReader(filePath));
-        //Product[] obj = new Product[5] ;
-//create & initialize actual product objects using constructor
-       // obj[0] = new Product(23907,"Dell Laptop");
-
-
-        Map<String, String> fileMap = new HashMap<String, String>();
-        int counter = 0;
-         while ((line = reader.readLine()) != null)
-         {
-             counter++;
-             String current = "";
-            System.out.println(line);
-               current = decodeString(line);
-               System.out.println(current);
-               Ingredient iG = decodeIngredient(line);
-               //fileMap.put(iG);7
-            //System.out.println(decodeIngredient(decodeString(line)));
-         }
-
-        return filePath;
-    };
-
 
     public static void main(String[] args) throws IOException {
 
+        decodeString("4 kzzo");
+        decodeIngredient("8 vgl#hgiikf");
+        fileMethod(decodeFile("src/main/resources/secret_recipe.txt"));
 
-        //decodeString("hgiikf");
-        //decodeIngredient("8 vgl#hgiikf");
-        decodeFile("/Users/vinny/Desktop/challenge/VincentCammarataChallengeThree/java/src/main/resources/secret_recipe.txt");
-        // TODO: implement me
     }
 }
